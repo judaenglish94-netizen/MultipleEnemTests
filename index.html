@@ -22,13 +22,13 @@
       padding: 20px 10px;
     }
 
-    /* Topo Fixo com Logo em Quadrado Perfeito */
+    /* Topo Fixo com Logo (Quadrado Perfeito) */
     .top-header {
       background-color: #ffffff;
       border: 3px solid #1a5b8c;
       border-radius: 12px;
-      width: 100px;  /* Largura fixa igual à altura */
-      height: 100px; /* Altura fixa igual à largura */
+      width: 100px;  /* Largura e altura iguais */
+      height: 100px;
       margin-bottom: 20px;
       display: flex;
       justify-content: center;
@@ -282,28 +282,58 @@
       background: #e2e8f0;
     }
 
-    /* Caixa de Feedback */
+    /* Caixa de Feedback Reformulada */
     .feedback-box {
-      margin-top: 15px;
-      padding: 15px;
-      border-radius: 8px;
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 10px;
       font-size: 0.95rem;
-      line-height: 1.5;
+      line-height: 1.6;
       display: none;
     }
 
     .feedback-box.correct {
       display: block;
       background-color: #f0fdf4;
-      border: 1px solid #86efac;
-      color: #166534;
+      border: 2px solid #22c55e;
+      color: #14532d;
     }
 
     .feedback-box.wrong {
       display: block;
       background-color: #fef2f2;
-      border: 1px solid #fca5a5;
+      border: 2px solid #ef4444;
+      color: #7f1d1d;
+    }
+
+    .feedback-status {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .feedback-detail {
+      margin-bottom: 8px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    .feedback-detail.user-wrong {
+      background-color: #fee2e2;
       color: #991b1b;
+    }
+
+    .feedback-detail.user-correct {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+
+    .feedback-explanation {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      text-align: justify;
     }
 
     /* Rodapé do Card */
@@ -365,7 +395,7 @@
       <ul class="instruction-list">
         <li><strong>Navegação:</strong> Responda uma questão por vez e avance nos botões.</li>
         <li><strong>Ferramenta Tesoura (✂️):</strong> Clique no ícone de tesoura para eliminar e riscar alternativas incorretas.</li>
-        <li><strong>Correção Imediata:</strong> Clique no botão "Checar" para conferir sua resposta e ler a justificativa em português.</li>
+        <li><strong>Correção Imediata:</strong> Clique no botão "Checar" para conferir sua resposta, comparar as opções e analisar as palavras-chave destacadas na justificativa.</li>
       </ul>
 
       <div style="text-align: center; margin-top: 30px;">
@@ -406,7 +436,7 @@
   </div>
 
   <script>
-    // BANCO DE DADOS DOS SIMULADOS
+    // BANCO DE DADOS DOS SIMULADOS COM PALAVRAS-CHAVE EM NEGRITO NAS JUSTIFICATIVAS
     const bancoDeTestes = [
       {
         id: "simulado-1",
@@ -415,7 +445,7 @@
         questoes: [
           {
             id: 1,
-            texto: "Uber loses license to operate in London...\nTransport for London (TfL) has said the taxi app was not 'fit and proper'...",
+            texto: "Uber loses license to operate in London...\nTransport for London (TfL) has said the taxi app was not 'fit and proper'...\nLondon Mayor Sadiq Khan said: 'I know this decision may be unpopular with Uber users, but their safety is the paramount concern.'",
             imagem: null,
             comando: "O texto informa que a prefeitura de Londres não renovará a licença da Uber. Entre os motivos citados, está o(a):",
             opcoes: [
@@ -426,11 +456,11 @@
               "E) mudança das práticas operacionais da empresa."
             ],
             correta: 2,
-            justificativa: "Correto! O prefeito de Londres e a TfL destacam que a preocupação principal é a segurança dos usuários ('their safety is the paramount concern')."
+            justificativa: "A resposta correta é a alternativa C porque o prefeito de Londres enfatiza no texto que a **segurança dos usuários** é a prioridade máxima (**'their safety is the paramount concern'**) ao justificar a recusa da licença, reforçando que a regulamentação existe para manter os **cidadãos londrinos seguros** (**'keep Londoners safe'**)."
           },
           {
             id: 2,
-            texto: "Why foreigners call this utopia...\nSingapore ranks high on surveys of places to live and work...",
+            texto: "Why foreigners call this utopia...\nSingapore ranks high on surveys of places to live and work...\n'Singapore is all about convenience,' said Richard Martin, a self-described older expat...",
             imagem: null,
             comando: "O texto fala sobre o modo de vida em Cingapura, apresentando os motivos pelos quais a cidade é:",
             opcoes: [
@@ -441,11 +471,11 @@
               "E) venerada pelos estrangeiros que vivem na região."
             ],
             correta: 4,
-            justificativa: "Correto! O texto apresenta Cingapura como uma 'utopia' para os estrangeiros, destacando a conveniência e a qualidade de vida relatadas pelos moradores."
+            justificativa: "A opção correta é a E pois o texto inicia perguntando **'Why foreigners call this utopia'** (Por que os estrangeiros chamam isso de utopia) e utiliza o depoimento de um **expatriado** (**'expat'**) para destacar como a cidade é altamente **venerada e elogiada pelos estrangeiros** que nela residem devido à sua conveniência e segurança."
           },
           {
             id: 3,
-            texto: "Nonprofit is building a 3D-printed neighborhood in Mexico...\nEach 500-foot house is printed from a mix of concrete...",
+            texto: "Nonprofit is building a 3D-printed neighborhood in Mexico...\nAccording to New Story, the concrete is sturdier than traditional concrete and the homes are reinforced to withstand seismic activity.",
             imagem: null,
             comando: "De acordo com o texto, o processo de impressão 3D permitiu à ONG New Story o(a):",
             opcoes: [
@@ -456,11 +486,11 @@
               "E) construção de moradias acessíveis para a classe urbana operária."
             ],
             correta: 1,
-            justificativa: "Correto! O texto afirma que as casas são reforçadas para suportar abalos sísmicos ('homes are reinforced to withstand seismic activity')."
+            justificativa: "A resposta certa é a B visto que o texto afirma expressamente que o concreto utilizado é mais resistente e que as moradias foram **reforçadas para suportar atividade sísmica** (**'reinforced to withstand seismic activity'**), termo em inglês diretamente relacionado à ocorrência de **terremotos**."
           },
           {
             id: 4,
-            texto: "Measles: four European nations lose eradication status...\nHealth experts warn that lies about the measles vaccine have allowed the illness to spread...",
+            texto: "Measles: four European nations lose eradication status...\nHealth experts warn that lies about the measles vaccine have allowed the illness to spread in certain areas or communities.",
             imagem: null,
             comando: "Segundo o texto, quatro nações europeias perderam seu status de país livre do sarampo. Tal situação está relacionada ao(à):",
             opcoes: [
@@ -471,7 +501,7 @@
               "E) fracasso da estratégia de imunização adotada nesses países."
             ],
             correta: 1,
-            justificativa: "Correto! O texto destaca que mentiras/informações falsas sobre a vacina permitiram o reaparecimento e espalhamento da doença."
+            justificativa: "A alternativa correta é a B pois o trecho final alerta que **mentiras sobre a vacina do sarampo** (**'lies about the measles vaccine'**) permitiram que a enfermidade se espalhasse, comprovando que o retorno da doença decorre da **disseminação de informações falsas**."
           },
           {
             id: 5,
@@ -486,7 +516,7 @@
               "E) ignora a crítica feita às suas habilidades matemáticas."
             ],
             correta: 3,
-            justificativa: "Correto! O chefe não percebe o absurdo matemático da frase ('top 110%') e responde 'Exactly. Thank you' (Exatamente. Obrigado), agradecendo pela frase ironicamente elogiosa."
+            justificativa: "A resposta correta é a D porque o chefe não percebe a ironia da conta matemática absurda do funcionário (**'top 110%'**) e responde no último quadrinho com **'Exactly. Thank you'** (Exatamente. Obrigado), demonstrando que **agradeceu a opinião do empregado** como se fosse um elogio genuíno."
           }
         ]
       },
@@ -497,7 +527,7 @@
         questoes: [
           {
             id: 1,
-            texto: "Love and Basketball was the feature filmmaking debut of Gina Prince-Bythewood...\nThe movie is considered to be one of the best contributions to the sporting cinematic tradition - yet at the time, a love story with a black female basketball player as the romantic lead wasn't an easy sell.",
+            texto: "Love and Basketball was the feature filmmaking debut of Gina Prince-Bythewood...\nyet at the time, a love story with a black female basketball player as the romantic lead wasn't an easy sell.",
             imagem: null,
             comando: "Segundo o texto, o filme Love and Basketball quebra paradigmas porque:",
             opcoes: [
@@ -508,11 +538,11 @@
               "E) foca o lado sentimental e romântico da prática do basquete."
             ],
             correta: 0,
-            justificativa: "Correto! O texto enfatiza a inovação ao centralizar o filme no sonho de uma jogadora negra ('black female basketball player as the romantic lead'), o que desafiava a tradição de filmes esportivos focados no público masculino."
+            justificativa: "A alternativa correta é a A porque o texto destaca a quebra do padrão no cinema ao colocar no centro da narrativa uma **atleta negra como protagonista romântica** (**'black female basketball player as the romantic lead'**), fugindo da tradição dominada por histórias masculinas."
           },
           {
             id: 2,
-            texto: "The Gambia is conducting its elections through a unique voting system...\nThis system is based on the use of tokens (clear-glass marbles) to be cast in separate iron-made drums... When a marble is introduced in the drum, it hits a bell...",
+            texto: "This system is based on the use of tokens (clear-glass marbles) to be cast in separate iron-made drums... Each party / candidate competing in an election has a drum painted with its own identifying colours and their party symbol...",
             imagem: null,
             comando: "Ao redor do mundo, cada país adota um sistema eleitoral distinto. Na Gâmbia, por exemplo, o método de votação descrito no texto se baseia em:",
             opcoes: [
@@ -523,11 +553,11 @@
               "E) sinos que emitem sons específicos para cada candidato."
             ],
             correta: 3,
-            justificativa: "Correto! O texto descreve o uso de 'clear-glass marbles' (bolas de gude de vidro) depositadas em 'iron-made drums' (tambores de ferro) pintados com as cores de cada candidato."
+            justificativa: "A opção B está certa porque o método eleitoral descrito utiliza **bolas de gude de vidro** (**'clear-glass marbles'**) que são depositadas em **tambores de ferro** (**'iron-made drums'**) customizados com as cores e imagens de cada candidato."
           },
           {
             id: 3,
-            texto: "The Door\nGo and open the door.\nEven if there's only the darkness ticking,\neven if there's only the hollow wind,\neven if nothing is there,\ngo and open the door.\nAt least there'll be a draught.",
+            texto: "The Door\nGo and open the door.\nEven if there's only the darkness ticking,\neven if there's only the hollow wind,\neven if nothing is there,\ngo and open the door.",
             imagem: null,
             comando: "No trecho do poema, ao incentivar a abertura da porta, o eu lírico estimula o leitor a explorar o mundo exterior. Entretanto, ao repetir a expressão 'even if', o eu lírico busca transmitir a ideia de que:",
             opcoes: [
@@ -538,7 +568,7 @@
               "E) a segurança é um requisito para se expor no mundo."
             ],
             correta: 3,
-            justificativa: "Correto! A expressão 'even if' (mesmo se) introduz cenários adversos (escuridão, vento, vazio), mostrando que explorar o exterior pode envolver riscos e incertezas, mas ainda assim vale a pena."
+            justificativa: "A alternativa D está correta porque a constante repetição do termo **'even if'** (mesmo se/ainda que) introduz condições adversas como **escuridão** (**'darkness'**) e **vazio** (**'nothing is there'**), ressaltando que **explorar o mundo exterior envolve riscos** e incertezas."
           },
           {
             id: 4,
@@ -553,7 +583,7 @@
               "E) solução combinada entre ambos para lidar com a tirania do patrão."
             ],
             correta: 1,
-            justificativa: "Correto! O humor da tirinha reside no fato de que nem o funcionário nem o chefe têm como verificar se o desconto de 10% realmente existia, considerando o problema 'resolvido' pela simples falta de checagem."
+            justificativa: "A resposta correta é a B pois a piada se constrói na fala **'Neither does your boss'** (Nem o seu chefe tem), mostrando que o 'problema foi resolvido' simplesmente pela **impossibilidade de verificar ou comprovar** se o desconto alegado foi verídico."
           },
           {
             id: 5,
@@ -568,7 +598,7 @@
               "E) a necessidade de os alertas em maços de cigarro serem levados a sério."
             ],
             correta: 4,
-            justificativa: "Correto! O anúncio faz uma comparação com um alerta absurdo ('pular de prédios na gravidez prejudica o bebê') para questionar o leitor: 'Você não ignoraria esse aviso. Por que ignora os avisos nos maços de cigarro?'."
+            justificativa: "A alternativa E é a correta pois o cartaz traz um aviso propositalmente absurdo para confrontar o leitor: **'You wouldn't ignore this warning. Why ignore them on cigarette packs?'** (Você não ignoraria este aviso. Por que ignora nos maços de cigarro?), enfatizando que **os avisos contra o fumo precisam ser levados a sério**."
           }
         ]
       }
@@ -713,6 +743,7 @@
         return;
       }
 
+      // Destaca as opções
       document.querySelectorAll('.option-item').forEach((el, idx) => {
         el.classList.remove('correct', 'wrong');
         if (idx === q.correta) {
@@ -722,12 +753,25 @@
         }
       });
 
+      const textoOpcaoCorreta = q.opcoes[q.correta];
+      const textoOpcaoSelecionada = q.opcoes[selecionada];
+
       if (selecionada === q.correta) {
         feedback.className = 'feedback-box correct';
-        feedback.innerHTML = `<strong>Parabéns! Resposta Correta.</strong><br>${q.justificativa}`;
+        feedback.innerHTML = `
+          <div class="feedback-status">✓ Resposta Correta!</div>
+          <div class="feedback-detail user-correct"><strong>Sua resposta:</strong> ${textoOpcaoCorreta}</div>
+          <div class="feedback-explanation">${q.justificativa}</div>
+        `;
       } else {
         feedback.className = 'feedback-box wrong';
-        feedback.innerHTML = `<strong>Resposta Incorreta.</strong><br>${q.justificativa}`;
+        feedback.innerHTML = `
+
+          <div class="feedback-status">✕ Resposta Incorreta</div>
+          <div class="feedback-detail user-wrong"><strong>Sua resposta:</strong> ${textoOpcaoSelecionada}</div>
+          <div class="feedback-detail user-correct"><strong>Resposta correta:</strong> ${textoOpcaoCorreta}</div>
+          <div class="feedback-explanation">${q.justificativa}</div>
+        `;
       }
     }
 
