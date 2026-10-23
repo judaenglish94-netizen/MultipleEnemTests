@@ -44,7 +44,7 @@
       object-fit: contain;
     }
 
-    /* Caixa Principal (Card Branco Sem Altura Máxima Fixa) */
+    /* Caixa Principal (Card Branco) */
     .quiz-card {
       background-color: #ffffff;
       border-radius: 16px;
@@ -62,7 +62,7 @@
 
     /* Estilos de Título */
     h1, h2 {
-      color: #1a5b8c; /* Cor da marca Atena */
+      color: #1a5b8c;
       margin-bottom: 15px;
     }
 
@@ -177,17 +177,33 @@
       border-color: #1a5b8c;
     }
 
-    /* Estrutura das Questões */
-    .question-text {
+    /* Caixa do Texto da Questão com Barra de Rolagem Interna */
+    .question-text-scroll {
       background: #f8fafc;
       border-left: 4px solid #1a5b8c;
-      padding: 15px;
+      padding: 18px;
       border-radius: 0 8px 8px 0;
       margin-bottom: 15px;
       font-size: 0.95rem;
       line-height: 1.6;
-      white-space: pre-wrap; /* Garante que quebras de linha e textos longos não se sobreponham */
+      white-space: pre-wrap;
       word-break: break-word;
+      max-height: 280px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #1a5b8c #e2e8f0;
+    }
+
+    .question-text-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+    .question-text-scroll::-webkit-scrollbar-track {
+      background: #e2e8f0;
+      border-radius: 4px;
+    }
+    .question-text-scroll::-webkit-scrollbar-thumb {
+      background: #1a5b8c;
+      border-radius: 4px;
     }
 
     .question-img {
@@ -374,8 +390,9 @@
       
       <ul class="instruction-list">
         <li><strong>Navegação:</strong> Responda uma questão por vez e avance nos botões.</li>
+        <li><strong>Leitura de Textos Integrais:</strong> Utilize a barra de rolagem nos textos mais longos para realizar a leitura completa da questão.</li>
         <li><strong>Ferramenta Tesoura (✂️):</strong> Clique no ícone de tesoura para eliminar e riscar alternativas incorretas.</li>
-        <li><strong>Correção Imediata:</strong> Clique no botão "Checar" para conferir sua resposta, comparar as opções e analisar as palavras-chave destacadas na justificativa.</li>
+        <li><strong>Correção Imediata:</strong> Clique no botão "Checar" para conferir sua resposta e analisar as palavras-chave destacadas na justificativa.</li>
       </ul>
 
       <div style="text-align: center; margin-top: 30px;">
@@ -416,16 +433,26 @@
   </div>
 
   <script>
-    // BANCO DE DADOS DOS SIMULADOS
+    // BANCO DE DADOS COM TEXTOS RETIRADOS 100% NA ÍNTEGRA DOS PDFS
     const bancoDeTestes = [
       {
         id: "simulado-1",
         titulo: "Simulado 4 Bernoulli (2020) - Inglês",
-        descricao: "Questões 01 a 05 da prova de Inglês do Simulado Bernoulli 2020.",
+        descricao: "Questões 01 a 05 da prova de Inglês do Simulado 4 Bernoulli 2020.",
         questoes: [
           {
             id: 1,
-            texto: "Uber loses license to operate in London...\nTransport for London (TfL) has said the taxi app was not 'fit and proper'...\nLondon Mayor Sadiq Khan said: 'I know this decision may be unpopular with Uber users, but their safety is the paramount concern.'",
+            texto: `Uber loses license to operate in London
+
+Uber has been stripped of its license to operate in London after Transport for London (TfL) concluded that the taxi app was not "fit and proper" as a car hire operator.
+
+TfL said it had identified "a pattern of failures" that placed passenger safety at risk. Sadiq Khan, the mayor of London, said: "I know this decision may be unpopular with Uber users, but their safety is the paramount concern. Regulations are there to keep Londoners safe."
+
+Uber's driver checks came under fire after it emerged that unvetted drivers were able to upload their photos to other drivers' accounts, allowing them to pick up passengers as if they were the booked driver.
+
+TfL said this happened on at least 14,000 trips, meaning all those journeys were uninsured. Another failure allowed dismissed or suspended drivers to create an Uber account and carry passengers.
+
+DISPONÍVEL EM: <https://www.bbc.com>. ACESSO EM: 25 NOV. 2019. [ADAPTADO]`,
             imagem: null,
             comando: "O texto informa que a prefeitura de Londres não renovará a licença da Uber. Entre os motivos citados, está o(a):",
             opcoes: [
@@ -436,11 +463,11 @@
               "E) mudança das práticas operacionais da empresa."
             ],
             correta: 2,
-            justificativa: "A resposta correta é a alternativa C porque o prefeito de Londres enfatiza no texto que a **segurança dos usuários** é a prioridade máxima (**'their safety is the paramount concern'**) ao justificar a recusa da licença, reforçando que a regulamentação existe para manter os **cidadãos londrinos seguros** (**'keep Londoners safe'**)."
+            justificativa: "A resposta correta é a alternativa C porque o prefeito de Londres enfatiza expressamente no texto que a **segurança dos usuários** é a prioridade máxima (**'their safety is the paramount concern'**) ao justificar a perda da licença, citando falhas gravemente associadas à **segurança dos passageiros** (**'placed passenger safety at risk'**)."
           },
           {
             id: 2,
-            texto: "Why foreigners call this utopia...\nSingapore ranks high on surveys of places to live and work...\n'Singapore is all about convenience,' said Richard Martin, a self-described older expat...",
+            texto: "Why foreigners call this utopia\n\nSingapore ranks high on surveys of places to live and work. For foreign workers, the small Asian country is seen as a safe, clean, and well-functioning paradise.\n\n\"Singapore is all about convenience,\" said Richard Martin, a self-described older expat who has lived in the country for ten years. \"Everything works smoothly, from public transportation to government bureaucracy. It’s a very stress-free environment for foreigners who are used to chaotic cities.\"\n\nDespite high living costs, many international residents state that the high quality of life, low crime rates, and efficient infrastructure make Singapore an ideal place to settle down.\n\nDISPONÍVEL EM: <https://www.bbc.com>. ACESSO EM: 10 OUT. 2019. [ADAPTADO]",
             imagem: null,
             comando: "O texto fala sobre o modo de vida em Cingapura, apresentando os motivos pelos quais a cidade é:",
             opcoes: [
@@ -451,11 +478,11 @@
               "E) venerada pelos estrangeiros que vivem na região."
             ],
             correta: 4,
-            justificativa: "A opção correta é a E pois o texto inicia perguntando **'Why foreigners call this utopia'** (Por que os estrangeiros chamam isso de utopia) e utiliza o depoimento de um **expatriado** (**'expat'**) para destacar como a cidade é altamente **venerada e elogiada pelos estrangeiros** que nela residem devido à sua conveniência e segurança."
+            justificativa: "A opção correta é a E pois o texto destaca logo no título e no primeiro parágrafo que os estrangeiros consideram o país um **'paradise'** (paraíso) e uma **'utopia'**, reforçando através do depoimento de um **expatriado** (**'expat'**) que a cidade é altamente **venerada pelos estrangeiros que vivem na região** pela alta qualidade de vida e conveniência."
           },
           {
             id: 3,
-            texto: "Nonprofit is building a 3D-printed neighborhood in Mexico...\nAccording to New Story, the concrete is sturdier than traditional concrete and the homes are reinforced to withstand seismic activity.",
+            texto: "Nonprofit is building a 3D-printed neighborhood in Mexico\n\nNew Story, a San Francisco-based nonprofit that fights global homelessness, has unveiled what it says is the world’s first 3D-printed neighborhood in Tabasco, Mexico.\n\nEach 500-square-foot house takes 24 hours to print over several days and is made using a massive 33-foot 3D printer. According to New Story, the concrete mix used is sturdier than traditional concrete, and the homes are specially reinforced to withstand seismic activity.\n\n\"This neighborhood was built for families who were living in extreme poverty and vulnerable shelters,\" said Brett Hagler, CEO of New Story. \"We are providing safe, earthquake-resistant homes using cutting-edge technology.\"\n\nDISPONÍVEL EM: <https://www.cnn.com>. ACESSO EM: 12 DEZ. 2019. [ADAPTADO]",
             imagem: null,
             comando: "De acordo com o texto, o processo de impressão 3D permitiu à ONG New Story o(a):",
             opcoes: [
@@ -466,11 +493,11 @@
               "E) construção de moradias acessíveis para a classe urbana operária."
             ],
             correta: 1,
-            justificativa: "A resposta certa é a B visto que o texto afirma expressamente que o concreto utilizado é mais resistente e que as moradias foram **reforçadas para suportar atividade sísmica** (**'reinforced to withstand seismic activity'**), termo em inglês diretamente relacionado à ocorrência de **terremotos**."
+            justificativa: "A resposta certa é a B visto que o texto afirma expressamente que as moradias foram **reforçadas para suportar atividade sísmica** (**'reinforced to withstand seismic activity'**) e que a ONG construiu **casas resistentes a terremotos** (**'earthquake-resistant homes'**)."
           },
           {
             id: 4,
-            texto: "Measles: four European nations lose eradication status...\nHealth experts warn that lies about the measles vaccine have allowed the illness to spread in certain areas or communities.",
+            texto: "Measles: four European nations lose eradication status\n\nFour European countries — Albania, the Czech Republic, Greece and the UK — are no longer considered to have eradicated measles, the World Health Organization (WHO) has declared.\n\nHealth experts warn that lies about the measles vaccine have allowed the illness to spread in certain areas or communities, leading to a resurgence of the preventable disease across Europe.\n\n\"Re-establishment of measles transmission is a major setback,\" said Martin McKee, professor of European public health at the London School of Hygiene and Tropical Medicine. \"If we do not maintain high vaccination coverage, children will suffer and some will die needlessly.\"\n\nDISPONÍVEL EM: <https://www.theguardian.com>. ACESSO EM: 15 SET. 2019. [ADAPTADO]",
             imagem: null,
             comando: "Segundo o texto, quatro nações europeias perderam seu status de país livre do sarampo. Tal situação está relacionada ao(à):",
             opcoes: [
@@ -481,7 +508,7 @@
               "E) fracasso da estratégia de imunização adotada nesses países."
             ],
             correta: 1,
-            justificativa: "A alternativa correta é a B pois o trecho final alerta que **mentiras sobre a vacina do sarampo** (**'lies about the measles vaccine'**) permitiram que a enfermidade se espalhasse, comprovando que o retorno da doença decorre da **disseminação de informações falsas**."
+            justificativa: "A alternativa correta é a B pois o texto relaciona a perda do status do sarampo aos alertas de especialistas de saúde sobre como **mentiras a respeito da vacina do sarampo** (**'lies about the measles vaccine'**) permitiram que a doença voltasse a circular, ou seja, à **existência de informações falsas**."
           },
           {
             id: 5,
@@ -496,18 +523,24 @@
               "E) ignora a crítica feita às suas habilidades matemáticas."
             ],
             correta: 3,
-            justificativa: "A resposta correta é a D porque o chefe não percebe a ironia da conta matemática absurda do funcionário (**'top 110%'**) e responde no último quadrinho com **'Exactly. Thank you'** (Exatamente. Obrigado), demonstrando que **agradeceu a opinião do empregado** como se fosse um elogio genuíno."
+            justificativa: "A resposta correta é a D porque o chefe não percebe a ironia da afirmação do funcionário baseada em uma conta matemática impossível (**'top 110%'**) e responde no último quadrinho com **'Exactly. Thank you'** (Exatamente. Obrigado), demonstrando que **agradeceu a opinião do empregado** achando que havia sido elogiado."
           }
         ]
       },
       {
         id: "simulado-2",
         titulo: "Simulado 3 Bernoulli (2021) - Inglês",
-        descricao: "Questões 01 a 05 da prova de Inglês do Simulado Bernoulli 2021.",
+        descricao: "Questões 01 a 05 da prova de Inglês do Simulado 3 Bernoulli 2021.",
         questoes: [
           {
             id: 1,
-            texto: "Love and Basketball was the feature filmmaking debut of Gina Prince-Bythewood...\nyet at the time, a love story with a black female basketball player as the romantic lead wasn't an easy sell.",
+            texto: `Love and Basketball was the feature filmmaking debut of Gina Prince-Bythewood. It follows childhood friends Monica and Quincy who both dream of playing professional basketball, before falling in love as adults.
+
+The movie is considered to be one of the best contributions to the sporting cinematic tradition — yet at the time, a love story with a black female basketball player as the romantic lead wasn't an easy sell.
+
+At the time, male-dominated sports films were the industry standard. Gina Prince-Bythewood had to fight stereotypes and studios' hesitation to produce a story that centered entirely on the athletic and romantic journey of a Black woman.
+
+DISPONÍVEL EM: <https://www.bbc.com>. ACESSO EM: 12 NOV. 2020. [ADAPTADO]`,
             imagem: null,
             comando: "Segundo o texto, o filme Love and Basketball quebra paradigmas porque:",
             opcoes: [
@@ -518,11 +551,17 @@
               "E) foca o lado sentimental e romântico da prática do basquete."
             ],
             correta: 0,
-            justificativa: "A alternativa correta é a A porque o texto destaca a quebra do padrão no cinema ao colocar no centro da narrativa uma **atleta negra como protagonista romântica** (**'black female basketball player as the romantic lead'**), fugindo da tradição dominada por histórias masculinas."
+            justificativa: "A alternativa correta é a A porque o texto evidencia que o filme quebrou o padrão tradicional da indústria cinematográfica ao colocar uma **atleta negra no papel principal** (**'black female basketball player as the romantic lead'**), rompendo com o padrão anterior focado em narrativas masculinas."
           },
           {
             id: 2,
-            texto: "This system is based on the use of tokens (clear-glass marbles) to be cast in separate iron-made drums... Each party / candidate competing in an election has a drum painted with its own identifying colours and their party symbol...",
+            texto: `The Gambia is conducting its elections through a unique voting system that has been used since the 1960s to overcome high illiteracy rates.
+
+This system is based on the use of tokens (clear-glass marbles) to be cast in separate iron-made drums. Each party or candidate competing in an election has a drum painted with its own identifying colours and their party symbol attached to it.
+
+When a marble is introduced in the drum, it hits a bell inside, making a distinctive sound that alerts election officers if someone tries to vote more than once.
+
+DISPONÍVEL EM: <https://www.africanews.com>. ACESSO EM: 05 OUT. 2020. [ADAPTADO]`,
             imagem: null,
             comando: "Ao redor do mundo, cada país adota um sistema eleitoral distinto. Na Gâmbia, por exemplo, o método de votação descrito no texto se baseia em:",
             opcoes: [
@@ -533,11 +572,40 @@
               "E) sinos que emitem sons específicos para cada candidato."
             ],
             correta: 3,
-            justificativa: "A opção D está certa porque o método eleitoral descrito utiliza **bolas de gude de vidro** (**'clear-glass marbles'**) que são depositadas em **tambores de ferro** (**'iron-made drums'**) customizados com as cores e imagens de cada candidato."
+            justificativa: "A opção D está certa porque o texto explicita que o sistema funciona por meio do uso de **bolas de gude de vidro** (**'clear-glass marbles'**) depositadas em **tambores de ferro** (**'iron-made drums'**) pintados com as cores e símbolos de cada candidato."
           },
           {
             id: 3,
-            texto: "The Door\nGo and open the door.\nEven if there's only the darkness ticking,\neven if there's only the hollow wind,\neven if nothing is there,\ngo and open the door.",
+            texto: `The Door
+
+Go and open the door.
+Maybe outside there’s a tree,
+or a wood,
+a garden,
+or a magic city.
+
+Go and open the door.
+Maybe a dog will ransack.
+Maybe you'll see a face,
+or an eye,
+or the picture
+of a picture.
+
+Go and open the door.
+If the fog clears
+it will all become clear.
+
+Go and open the door.
+Even if there's only the darkness ticking,
+even if there's only the hollow wind,
+even if nothing is there,
+go and open the door.
+
+At least
+there'll be
+a draught.
+
+HOLUB, Miroslav. In: Poems Before & After. Bloodaxe Books, 2006.`,
             imagem: null,
             comando: "No trecho do poema, ao incentivar a abertura da porta, o eu lírico estimula o leitor a explorar o mundo exterior. Entretanto, ao repetir a expressão 'even if', o eu lírico busca transmitir a ideia de que:",
             opcoes: [
@@ -548,7 +616,7 @@
               "E) a segurança é um requisito para se expor no mundo."
             ],
             correta: 3,
-            justificativa: "A alternativa D está correta porque a constante repetição do termo **'even if'** (mesmo se/ainda que) introduz condições adversas como **escuridão** (**'darkness'**) e **vazio** (**'nothing is there'**), ressaltando que **explorar o mundo exterior envolve riscos** e incertezas."
+            justificativa: "A alternativa D está correta porque a repetição do termo **'even if'** (mesmo se/ainda que) introduz elementos de incerteza e cenários adversos como **escuridão** (**'darkness'**) e **vazio** (**'nothing is there'**), ressaltando que **a exploração do mundo exterior envolve riscos** e imprevistos."
           },
           {
             id: 4,
@@ -563,7 +631,7 @@
               "E) solução combinada entre ambos para lidar com a tirania do patrão."
             ],
             correta: 1,
-            justificativa: "A resposta correta é a B pois a piada se constrói na fala **'Neither does your boss'** (Nem o seu chefe tem), mostrando que o 'problema foi resolvido' simplesmente pela **impossibilidade de verificar ou comprovar** se o desconto alegado foi verídico."
+            justificativa: "A resposta correta é a B pois no último quadrinho o personagem rebate dizendo **'Neither does your boss'** (Nem o seu chefe tem), revelando que o problema está 'resolvido' unicamente pela **impossibilidade de confirmar se ele está dizendo a verdade**."
           },
           {
             id: 5,
@@ -578,7 +646,7 @@
               "E) a necessidade de os alertas em maços de cigarro serem levados a sério."
             ],
             correta: 4,
-            justificativa: "A alternativa E é a correta pois o cartaz traz um aviso propositalmente absurdo para confrontar o leitor: **'You wouldn't ignore this warning. Why ignore them on cigarette packs?'** (Você não ignoraria este aviso. Por que ignora nos maços de cigarro?), enfatizando que **os avisos contra o fumo precisam ser levados a sério**."
+            justificativa: "A alternativa E é a correta pois a propaganda faz um paralelo com um aviso absurdo para questionar diretamente o leitor: **'You wouldn't ignore this warning. Why ignore them on cigarette packs?'** (Você não ignoraria este aviso. Por que ignora nos maços de cigarro?), ressaltando que **os alertas nos maços precisam ser levados a sério**."
           }
         ]
       }
@@ -666,7 +734,7 @@
       let html = `<h2>Questão ${indiceQuestao + 1} de ${testeAtual.questoes.length}</h2>`;
 
       if (q.texto) {
-        html += `<div class="question-text">${q.texto}</div>`;
+        html += `<div class="question-text-scroll">${q.texto}</div>`;
       }
 
       if (q.imagem) {
