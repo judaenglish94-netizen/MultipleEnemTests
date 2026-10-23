@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Simulados - Colégio Atena</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #0d2035; /* Fundo azul escuro */
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+    }
+
+    /* Topo Fixo com Logo */
+    .top-header {
+      background-color: #ffffff;
+      border: 3px solid #1a5b8c;
+      border-radius: 12px;
+      padding: 12px 25px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 850px;
+    }
+
+    .top-header img {
+      max-height: 70px;
+      object-fit: contain;
+    }
+
+    /* Caixa Principal (Card Branco) */
+    .quiz-card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 850px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+
+    /* Scrollbar Azul Escuro */
+    .card-content::-webkit-scrollbar {
+      width: 10px;
+    }
+    .card-content::-webkit-scrollbar-track {
+      background: #e2e8f0;
+      border-radius: 8px;
+    }
+    .card-content::-webkit-scrollbar-thumb {
+      background: #1a365d;
+      border-radius: 8px;
+    }
+    .card-content::-webkit-scrollbar-thumb:hover {
+      background: #0d2035;
+    }
+
+    .card-content {
+      padding: 25px;
+      overflow-y: auto;
+      flex: 1;
+      scrollbar-color: #1a365d #e2e8f0;
+      scrollbar-width: thin;
+    }
+
+    /* Estilos de Título */
+    h1, h2 {
+      color: #1a5b8c; /* Cor da marca Atena */
+      margin-bottom: 15px;
+    }
+
+    .welcome-text {
+      color: #1a5b8c;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .instruction-list {
+      margin-left: 20px;
+      margin-bottom: 25px;
+      color: #475569;
+      line-height: 1.7;
+    }
+
+    /* Grid do Menu de Escolha de Testes */
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .test-card {
+      border: 2px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 20px;
+      background: #f8fafc;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .test-card:hover {
+      border-color: #1a5b8c;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(26, 91, 140, 0.15);
+    }
+
+    .test-card h3 {
+      color: #1a5b8c;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .test-card p {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 15px;
+    }
+
+    /* Botões Principais */
+    .btn-action {
+      background-color: #1a5b8c;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-action:hover {
+      background-color: #134267;
+      transform: translateY(-1px);
+    }
+
+    /* Menu de Abas Superior */
+    .nav-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e2e8f0;
+      align-items: center;
+    }
+
+    .btn-back-menu {
+      background-color: #64748b;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-right: auto;
+    }
+
+    .q-tab {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .q-tab.active {
+      background: #1a5b8c;
+      color: white;
+      border-color: #1a5b8c;
+    }
+
+    /* Estrutura das Questões */
+    .question-text {
+      background: #f8fafc;
+      border-left: 4px solid #1a5b8c;
+      padding: 15px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .question-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 15px 0;
+      border: 1px solid #cbd5e1;
+      display: block;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .option-item:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .option-item.selected {
+      border-color: #1a5b8c;
+      background: #eff6ff;
+    }
+
+    .option-item.correct {
+      border-color: #16a34a !important;
+      background: #f0fdf4 !important;
+    }
+
+    .option-item.wrong {
+      border-color: #dc2626 !important;
+      background: #fef2f2 !important;
+    }
+
+    .option-item.eliminated .option-text {
+      text-decoration: line-through;
+      opacity: 0.4;
+    }
+
+    .option-text {
+      flex: 1;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .btn-scissor {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-left: 8px;
+      transition: background 0.2s;
+    }
+
+    .btn-scissor:hover {
+      background: #e2e8f0;
+    }
+
+    /* Caixa de Feedback */
+    .feedback-box {
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .feedback-box.correct {
+      display: block;
+      background-color: #f0fdf4;
+      border: 1px solid #86efac;
+      color: #166534;
+    }
+
+    .feedback-box.wrong {
+      display: block;
+      background-color: #fef2f2;
+      border: 1px solid #fca5a5;
+      color: #991b1b;
+    }
+
+    /* Rodapé do Card */
+    .card-footer {
+      padding: 15px 25px;
+      background: #f8fafc;
+      border-top: 2px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-nav {
+      background-color: #1a5b8c;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-nav:disabled {
+      background-color: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .btn-check {
+      background-color: #16a34a;
+    }
+
+    .btn-check:hover {
+      background-color: #15803d;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topo Fixo com Logo -->
+  <div class="top-header">
+    <img src="atenalogo.png" alt="Colégio Atena">
+  </div>
+
+  <!-- Caixa Principal -->
+  <div class="quiz-card">
+    
+    <!-- PÁGINA 1: INSTRUÇÕES E BOAS-VINDAS -->
+    <div id="page-welcome" class="card-content">
+      <h2>Bem-vindo ao Portal de Simulados</h2>
+      <p class="welcome-text">
+        Prepare-se para os exames praticando com os simulados de Língua Inglesa do Colégio Atena.
+      </p>
+      
+      <ul class="instruction-list">
+        <li><strong>Navegação:</strong> Responda uma questão por vez e avance nos botões.</li>
+        <li><strong>Ferramenta Tesoura (✂️):</strong> Clique no ícone de tesoura para eliminar e riscar alternativas incorretas.</li>
+        <li><strong>Correção Imediata:</strong> Clique no botão "Checar" para conferir sua resposta e ler a justificativa em português.</li>
+      </ul>
+
+      <div style="text-align: center; margin-top: 30px;">
+        <button class="btn-action" onclick="irParaMenuDeProvas()">Menu de provas</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA 2: MENU DE ESCOLHA DE TESTES -->
+    <div id="page-menu" class="card-content hidden">
+      <h2>Menu de Provas</h2>
+      <p style="color: #64748b; margin-bottom: 15px;">Selecione o simulado que deseja realizar:</p>
+      
+      <div id="test-list" class="test-grid"></div>
+
+      <div style="margin-top: 25px;">
+        <button class="btn-back-menu" onclick="irParaInicio()">← Voltar ao Início</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA 3: AMBIENTE DO SIMULADO -->
+    <div id="page-quiz" class="card-content hidden">
+      <div class="nav-menu">
+        <button class="btn-back-menu" onclick="irParaMenuDeProvas()">← Menu de provas</button>
+        <div id="tabs-container" style="display: flex; gap: 6px;"></div>
+      </div>
+
+      <div id="question-container"></div>
+      <div id="feedback-container" class="feedback-box"></div>
+    </div>
+
+    <!-- RODAPÉ FIXO DO SIMULADO -->
+    <div id="quiz-footer" class="card-footer hidden">
+      <button id="btn-prev" class="btn-nav" onclick="mudarQuestao(-1)">Anterior</button>
+      <button id="btn-check" class="btn-nav btn-check" onclick="checarResposta()">Checar</button>
+      <button id="btn-next" class="btn-nav" onclick="mudarQuestao(1)">Próxima</button>
+    </div>
+
+  </div>
+
+  <script>
+    // BANCO DE DADOS DOS SIMULADOS
+    const bancoDeTestes = [
+      {
+        id: "simulado-1",
+        titulo: "Simulado 4 Bernoulli (2020) - Inglês",
+        descricao: "Questões 01 a 05 da prova de Inglês do Simulado Bernoulli 2020.",
+        questoes: [
+          {
+            id: 1,
+            texto: "Uber loses license to operate in London...\nTransport for London (TfL) has said the taxi app was not 'fit and proper'...",
+            imagem: null,
+            comando: "O texto informa que a prefeitura de Londres não renovará a licença da Uber. Entre os motivos citados, está o(a):",
+            opcoes: [
+              "A) quantidade excessiva de motoristas sem cadastro.",
+              "B) tamanho muito pequeno dos carros a serviço da Uber.",
+              "C) preocupação com a segurança dos usuários do serviço.",
+              "D) concorrência desleal com os famosos táxis londrinos.",
+              "E) mudança das práticas operacionais da empresa."
+            ],
+            correta: 2,
+            justificativa: "Correto! O prefeito de Londres e a TfL destacam que a preocupação principal é a segurança dos usuários ('their safety is the paramount concern')."
+          },
+          {
+            id: 2,
+            texto: "Why foreigners call this utopia...\nSingapore ranks high on surveys of places to live and work...",
+            imagem: null,
+            comando: "O texto fala sobre o modo de vida em Cingapura, apresentando os motivos pelos quais a cidade é:",
+            opcoes: [
+              "A) apontada como modelo para a construção de estradas e vias públicas.",
+              "B) citada como exemplo da coexistência entre diferentes etnias.",
+              "C) considerada um dos ícones arquitetônicos do mundo.",
+              "D) tida como a que tem o maior custo de vida da Ásia.",
+              "E) venerada pelos estrangeiros que vivem na região."
+            ],
+            correta: 4,
+            justificativa: "Correto! O texto apresenta Cingapura como uma 'utopia' para os estrangeiros, destacando a conveniência e a qualidade de vida relatadas pelos moradores."
+          },
+          {
+            id: 3,
+            texto: "Nonprofit is building a 3D-printed neighborhood in Mexico...\nEach 500-foot house is printed from a mix of concrete...",
+            imagem: null,
+            comando: "De acordo com o texto, o processo de impressão 3D permitiu à ONG New Story o(a):",
+            opcoes: [
+              "A) fabricação de casas por um valor abaixo da média.",
+              "B) desenvolvimento de casas resistentes a terremotos.",
+              "C) doação de 500 casas a uma comunidade no México.",
+              "D) utilização de um material mais durável do que o concreto.",
+              "E) construção de moradias acessíveis para a classe urbana operária."
+            ],
+            correta: 1,
+            justificativa: "Correto! O texto afirma que as casas são reforçadas para suportar abalos sísmicos ('homes are reinforced to withstand seismic activity')."
+          },
+          {
+            id: 4,
+            texto: "Measles: four European nations lose eradication status...\nHealth experts warn that lies about the measles vaccine have allowed the illness to spread...",
+            imagem: null,
+            comando: "Segundo o texto, quatro nações europeias perderam seu status de país livre do sarampo. Tal situação está relacionada ao(à):",
+            opcoes: [
+              "A) surto da doença ocorrido na Europa nos últimos 12 meses.",
+              "B) existência de informações falsas sobre a vacina contra o sarampo.",
+              "C) atraso na distribuição da vacina contra o sarampo e outras doenças.",
+              "D) impossibilidade de imunizar comunidades isoladas e conservadoras.",
+              "E) fracasso da estratégia de imunização adotada nesses países."
+            ],
+            correta: 1,
+            justificativa: "Correto! O texto destaca que mentiras/informações falsas sobre a vacina permitiram o reaparecimento e espalhamento da doença."
+          },
+          {
+            id: 5,
+            texto: null,
+            imagem: "questao05.png",
+            comando: "Na tirinha, a ironia é perceptível e gera efeito de humor quando o chefe da personagem de óculos:",
+            opcoes: [
+              "A) concorda com o fato de os gerentes serem pessoas acima da média.",
+              "B) demonstra acreditar que seu funcionário esteja entre os melhores.",
+              "C) afirma que os gerentes demonstram excesso de autoconfiança.",
+              "D) agradece a opinião do empregado sobre sua capacidade.",
+              "E) ignora a crítica feita às suas habilidades matemáticas."
+            ],
+            correta: 3,
+            justificativa: "Correto! O chefe não percebe o absurdo matemático da frase ('top 110%') e responde 'Exactly. Thank you' (Exatamente. Obrigado), agradecendo pela frase ironicamente elogiosa."
+          }
+        ]
+      },
+      {
+        id: "simulado-2",
+        titulo: "Simulado 3 Bernoulli (2021) - Inglês",
+        descricao: "Questões 01 a 05 da prova de Inglês do Simulado Bernoulli 2021.",
+        questoes: [
+          {
+            id: 1,
+            texto: "Love and Basketball was the feature filmmaking debut of Gina Prince-Bythewood...\nThe movie is considered to be one of the best contributions to the sporting cinematic tradition - yet at the time, a love story with a black female basketball player as the romantic lead wasn't an easy sell.",
+            imagem: null,
+            comando: "Segundo o texto, o filme Love and Basketball quebra paradigmas porque:",
+            opcoes: [
+              "A) traz uma jogadora de basquete negra como protagonista.",
+              "B) mostra o esporte sob a perspectiva da classe média negra.",
+              "C) expõe os conflitos de gênero entre um casal de atletas.",
+              "D) narra uma história idealizada por uma ex-jogadora de basquete.",
+              "E) foca o lado sentimental e romântico da prática do basquete."
+            ],
+            correta: 0,
+            justificativa: "Correto! O texto enfatiza a inovação ao centralizar o filme no sonho de uma jogadora negra ('black female basketball player as the romantic lead'), o que desafiava a tradição de filmes esportivos focados no público masculino."
+          },
+          {
+            id: 2,
+            texto: "The Gambia is conducting its elections through a unique voting system...\nThis system is based on the use of tokens (clear-glass marbles) to be cast in separate iron-made drums... When a marble is introduced in the drum, it hits a bell...",
+            imagem: null,
+            comando: "Ao redor do mundo, cada país adota um sistema eleitoral distinto. Na Gâmbia, por exemplo, o método de votação descrito no texto se baseia em:",
+            opcoes: [
+              "A) urnas de vidro para agilizar a contagem dos votos.",
+              "B) cédulas contendo os símbolos e as cores dos partidos.",
+              "C) equipes treinadas em auxiliar eleitores analfabetos.",
+              "D) bolas de gude inseridas em tambores personalizados.",
+              "E) sinos que emitem sons específicos para cada candidato."
+            ],
+            correta: 3,
+            justificativa: "Correto! O texto descreve o uso de 'clear-glass marbles' (bolas de gude de vidro) depositadas em 'iron-made drums' (tambores de ferro) pintados com as cores de cada candidato."
+          },
+          {
+            id: 3,
+            texto: "The Door\nGo and open the door.\nEven if there's only the darkness ticking,\neven if there's only the hollow wind,\neven if nothing is there,\ngo and open the door.\nAt least there'll be a draught.",
+            imagem: null,
+            comando: "No trecho do poema, ao incentivar a abertura da porta, o eu lírico estimula o leitor a explorar o mundo exterior. Entretanto, ao repetir a expressão 'even if', o eu lírico busca transmitir a ideia de que:",
+            opcoes: [
+              "A) o ambiente externo é desconhecido.",
+              "B) o mundo exterior é desprovido de vida.",
+              "C) os cenários externos são os mais diversos.",
+              "D) a exploração do mundo exterior envolve riscos.",
+              "E) a segurança é um requisito para se expor no mundo."
+            ],
+            correta: 3,
+            justificativa: "Correto! A expressão 'even if' (mesmo se) introduz cenários adversos (escuridão, vento, vazio), mostrando que explorar o exterior pode envolver riscos e incertezas, mas ainda assim vale a pena."
+          },
+          {
+            id: 4,
+            texto: null,
+            imagem: "simu3_q04.png",
+            comando: "O personagem de gravata, ao alegar no terceiro quadrinho que o problema foi resolvido, refere-se ao(à):",
+            opcoes: [
+              "A) desconto oferecido e comprovado sobre o preço original.",
+              "B) impossibilidade de confirmar se ele está dizendo a verdade.",
+              "C) negociação que beneficiou todas as partes envolvidas.",
+              "D) trapaça praticada pelas personagens contra o chefe de um deles.",
+              "E) solução combinada entre ambos para lidar com a tirania do patrão."
+            ],
+            correta: 1,
+            justificativa: "Correto! O humor da tirinha reside no fato de que nem o funcionário nem o chefe têm como verificar se o desconto de 10% realmente existia, considerando o problema 'resolvido' pela simples falta de checagem."
+          },
+          {
+            id: 5,
+            texto: null,
+            imagem: "simu3_q05.png",
+            comando: "Os recursos empregados no outdoor de divulgação de uma campanha antitabagismo buscam chamar a atenção do leitor para:",
+            opcoes: [
+              "A) a eficácia de anúncios mais realistas no combate ao fumo.",
+              "B) o risco a que as fumantes grávidas submetem seus bebês.",
+              "C) a extensão dos danos no organismo causados pelo tabagismo.",
+              "D) o desconhecimento dos fumantes sobre as consequências de suas ações.",
+              "E) a necessidade de os alertas em maços de cigarro serem levados a sério."
+            ],
+            correta: 4,
+            justificativa: "Correto! O anúncio faz uma comparação com um alerta absurdo ('pular de prédios na gravidez prejudica o bebê') para questionar o leitor: 'Você não ignoraria esse aviso. Por que ignora os avisos nos maços de cigarro?'."
+          }
+        ]
+      }
+    ];
+
+    // ESTADO DO APLICATIVO
+    let testeAtual = null;
+    let indiceQuestao = 0;
+    let respostasUsuario = {};
+    let eliminadas = {};
+
+    // TROCA DE TELAS
+    function irParaInicio() {
+      document.getElementById('page-welcome').classList.remove('hidden');
+      document.getElementById('page-menu').classList.add('hidden');
+      document.getElementById('page-quiz').classList.add('hidden');
+      document.getElementById('quiz-footer').classList.add('hidden');
+    }
+
+    function irParaMenuDeProvas() {
+      document.getElementById('page-welcome').classList.add('hidden');
+      document.getElementById('page-menu').classList.remove('hidden');
+      document.getElementById('page-quiz').classList.add('hidden');
+      document.getElementById('quiz-footer').classList.add('hidden');
+      renderizarMenuDeProvas();
+    }
+
+    function renderizarMenuDeProvas() {
+      const container = document.getElementById('test-list');
+      container.innerHTML = '';
+
+      bancoDeTestes.forEach((teste, index) => {
+        const card = document.createElement('div');
+        card.className = 'test-card';
+        card.innerHTML = `
+          <div>
+            <h3>${teste.titulo}</h3>
+            <p>${teste.descricao}</p>
+          </div>
+          <button class="btn-action" style="font-size: 0.9rem; padding: 8px 16px;" onclick="iniciarSimulado(${index})">
+            Iniciar Simulado (${teste.questoes.length} Qs)
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function iniciarSimulado(index) {
+      testeAtual = bancoDeTestes[index];
+      indiceQuestao = 0;
+      respostasUsuario = {};
+      eliminadas = {};
+
+      document.getElementById('page-menu').classList.add('hidden');
+      document.getElementById('page-quiz').classList.remove('hidden');
+      document.getElementById('quiz-footer').classList.remove('hidden');
+
+      carregarQuestao();
+    }
+
+    function renderizarAbas() {
+      const container = document.getElementById('tabs-container');
+      container.innerHTML = '';
+
+      testeAtual.questoes.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `q-tab ${idx === indiceQuestao ? 'active' : ''}`;
+        btn.innerText = `Q${idx + 1}`;
+        btn.onclick = () => {
+          indiceQuestao = idx;
+          carregarQuestao();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function carregarQuestao() {
+      const q = testeAtual.questoes[indiceQuestao];
+      const container = document.getElementById('question-container');
+      const feedback = document.getElementById('feedback-container');
+
+      feedback.className = 'feedback-box';
+      feedback.style.display = 'none';
+
+      let html = `<h2>Questão ${indiceQuestao + 1} de ${testeAtual.questoes.length}</h2>`;
+
+      if (q.texto) {
+        html += `<div class="question-text">${q.texto}</div>`;
+      }
+
+      if (q.imagem) {
+        html += `<img src="${q.imagem}" alt="Imagem da questão" class="question-img">`;
+      }
+
+      html += `<p style="font-weight: 600; font-size: 1rem; margin: 15px 0;">${q.comando}</p>`;
+      html += `<div class="options-list">`;
+
+      q.opcoes.forEach((opt, optIdx) => {
+        const isSelected = respostasUsuario[indiceQuestao] === optIdx;
+        const isEliminated = eliminadas[`${indiceQuestao}-${optIdx}`];
+
+        html += `
+          <div class="option-item ${isSelected ? 'selected' : ''} ${isEliminated ? 'eliminated' : ''}" id="opt-${optIdx}" onclick="selecionarOpcao(${optIdx})">
+            <span class="option-text">${opt}</span>
+            <button class="btn-scissor" title="Eliminar opção" onclick="alternarEliminacao(event, ${optIdx})">✂️</button>
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      container.innerHTML = html;
+
+      atualizarBotoes();
+      renderizarAbas();
+    }
+
+    function selecionarOpcao(optIdx) {
+      respostasUsuario[indiceQuestao] = optIdx;
+      document.querySelectorAll('.option-item').forEach((el, idx) => {
+        el.classList.toggle('selected', idx === optIdx);
+      });
+    }
+
+    function alternarEliminacao(event, optIdx) {
+      event.stopPropagation();
+      const key = `${indiceQuestao}-${optIdx}`;
+      eliminadas[key] = !eliminadas[key];
+      
+      const optEl = document.getElementById(`opt-${optIdx}`);
+      if (optEl) {
+        optEl.classList.toggle('eliminated', eliminadas[key]);
+      }
+    }
+
+    function checarResposta() {
+      const q = testeAtual.questoes[indiceQuestao];
+      const selecionada = respostasUsuario[indiceQuestao];
+      const feedback = document.getElementById('feedback-container');
+
+      if (selecionada === undefined) {
+        alert('Por favor, selecione uma opção antes de checar.');
+        return;
+      }
+
+      document.querySelectorAll('.option-item').forEach((el, idx) => {
+        el.classList.remove('correct', 'wrong');
+        if (idx === q.correta) {
+          el.classList.add('correct');
+        } else if (idx === selecionada) {
+          el.classList.add('wrong');
+        }
+      });
+
+      if (selecionada === q.correta) {
+        feedback.className = 'feedback-box correct';
+        feedback.innerHTML = `<strong>Parabéns! Resposta Correta.</strong><br>${q.justificativa}`;
+      } else {
+        feedback.className = 'feedback-box wrong';
+        feedback.innerHTML = `<strong>Resposta Incorreta.</strong><br>${q.justificativa}`;
+      }
+    }
+
+    function mudarQuestao(delta) {
+      const novoIndice = indiceQuestao + delta;
+      if (novoIndice >= 0 && novoIndice < testeAtual.questoes.length) {
+        indiceQuestao = novoIndice;
+        carregarQuestao();
+      }
+    }
+
+    function atualizarBotoes() {
+      document.getElementById('btn-prev').disabled = (indiceQuestao === 0);
+      document.getElementById('btn-next').disabled = (indiceQuestao === testeAtual.questoes.length - 1);
+    }
+  </script>
+</body>
+</html>
