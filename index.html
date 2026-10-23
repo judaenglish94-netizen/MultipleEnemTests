@@ -27,7 +27,7 @@
       background-color: #ffffff;
       border: 3px solid #1a5b8c;
       border-radius: 12px;
-      width: 100px;  /* Largura e altura iguais */
+      width: 100px;
       height: 100px;
       margin-bottom: 20px;
       display: flex;
@@ -35,6 +35,7 @@
       align-items: center;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
       padding: 8px;
+      flex-shrink: 0;
     }
 
     .top-header img {
@@ -43,41 +44,20 @@
       object-fit: contain;
     }
 
-    /* Caixa Principal (Card Branco) */
+    /* Caixa Principal (Card Branco Sem Altura Máxima Fixa) */
     .quiz-card {
       background-color: #ffffff;
       border-radius: 16px;
       width: 100%;
       max-width: 850px;
-      max-height: 80vh;
       display: flex;
       flex-direction: column;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-      overflow: hidden;
-    }
-
-    /* Scrollbar Azul Escuro */
-    .card-content::-webkit-scrollbar {
-      width: 10px;
-    }
-    .card-content::-webkit-scrollbar-track {
-      background: #e2e8f0;
-      border-radius: 8px;
-    }
-    .card-content::-webkit-scrollbar-thumb {
-      background: #1a365d;
-      border-radius: 8px;
-    }
-    .card-content::-webkit-scrollbar-thumb:hover {
-      background: #0d2035;
+      margin-bottom: 30px;
     }
 
     .card-content {
       padding: 25px;
-      overflow-y: auto;
-      flex: 1;
-      scrollbar-color: #1a365d #e2e8f0;
-      scrollbar-width: thin;
     }
 
     /* Estilos de Título */
@@ -205,8 +185,9 @@
       border-radius: 0 8px 8px 0;
       margin-bottom: 15px;
       font-size: 0.95rem;
-      line-height: 1.5;
-      white-space: pre-line;
+      line-height: 1.6;
+      white-space: pre-wrap; /* Garante que quebras de linha e textos longos não se sobreponham */
+      word-break: break-word;
     }
 
     .question-img {
@@ -230,7 +211,7 @@
       align-items: center;
       border: 2px solid #e2e8f0;
       border-radius: 10px;
-      padding: 10px 14px;
+      padding: 12px 14px;
       background: #ffffff;
       cursor: pointer;
       transition: all 0.2s;
@@ -289,18 +270,15 @@
       border-radius: 10px;
       font-size: 0.95rem;
       line-height: 1.6;
-      display: none;
     }
 
     .feedback-box.correct {
-      display: block;
       background-color: #f0fdf4;
       border: 2px solid #22c55e;
       color: #14532d;
     }
 
     .feedback-box.wrong {
-      display: block;
       background-color: #fef2f2;
       border: 2px solid #ef4444;
       color: #7f1d1d;
@@ -314,7 +292,7 @@
 
     .feedback-detail {
       margin-bottom: 8px;
-      padding: 6px 10px;
+      padding: 8px 12px;
       border-radius: 6px;
       font-size: 0.9rem;
     }
@@ -332,7 +310,7 @@
     .feedback-explanation {
       margin-top: 12px;
       padding-top: 10px;
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-top: 1px solid rgba(0, 0, 0, 0.15);
       text-align: justify;
     }
 
@@ -345,6 +323,8 @@
       justify-content: space-between;
       align-items: center;
       gap: 10px;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
     }
 
     .btn-nav {
@@ -423,7 +403,7 @@
       </div>
 
       <div id="question-container"></div>
-      <div id="feedback-container" class="feedback-box"></div>
+      <div id="feedback-container" class="hidden"></div>
     </div>
 
     <!-- RODAPÉ FIXO DO SIMULADO -->
@@ -436,7 +416,7 @@
   </div>
 
   <script>
-    // BANCO DE DADOS DOS SIMULADOS COM PALAVRAS-CHAVE EM NEGRITO NAS JUSTIFICATIVAS
+    // BANCO DE DADOS DOS SIMULADOS
     const bancoDeTestes = [
       {
         id: "simulado-1",
@@ -553,7 +533,7 @@
               "E) sinos que emitem sons específicos para cada candidato."
             ],
             correta: 3,
-            justificativa: "A opção B está certa porque o método eleitoral descrito utiliza **bolas de gude de vidro** (**'clear-glass marbles'**) que são depositadas em **tambores de ferro** (**'iron-made drums'**) customizados com as cores e imagens de cada candidato."
+            justificativa: "A opção D está certa porque o método eleitoral descrito utiliza **bolas de gude de vidro** (**'clear-glass marbles'**) que são depositadas em **tambores de ferro** (**'iron-made drums'**) customizados com as cores e imagens de cada candidato."
           },
           {
             id: 3,
@@ -680,8 +660,8 @@
       const container = document.getElementById('question-container');
       const feedback = document.getElementById('feedback-container');
 
-      feedback.className = 'feedback-box';
-      feedback.style.display = 'none';
+      feedback.className = 'hidden';
+      feedback.innerHTML = '';
 
       let html = `<h2>Questão ${indiceQuestao + 1} de ${testeAtual.questoes.length}</h2>`;
 
@@ -743,7 +723,6 @@
         return;
       }
 
-      // Destaca as opções
       document.querySelectorAll('.option-item').forEach((el, idx) => {
         el.classList.remove('correct', 'wrong');
         if (idx === q.correta) {
@@ -766,13 +745,14 @@
       } else {
         feedback.className = 'feedback-box wrong';
         feedback.innerHTML = `
-
           <div class="feedback-status">✕ Resposta Incorreta</div>
           <div class="feedback-detail user-wrong"><strong>Sua resposta:</strong> ${textoOpcaoSelecionada}</div>
           <div class="feedback-detail user-correct"><strong>Resposta correta:</strong> ${textoOpcaoCorreta}</div>
           <div class="feedback-explanation">${q.justificativa}</div>
         `;
       }
+
+      feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     function mudarQuestao(delta) {
