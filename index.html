@@ -22,13 +22,13 @@
       padding: 20px 10px;
     }
 
-    /* Topo Fixo com Logo (Quadrado Perfeito) */
+    /* Topo Fixo com Logo (Quadrado Perfeito - 30% Maior: 130px) */
     .top-header {
       background-color: #ffffff;
       border: 3px solid #1a5b8c;
       border-radius: 12px;
-      width: 100px;
-      height: 100px;
+      width: 130px;
+      height: 130px;
       margin-bottom: 20px;
       display: flex;
       justify-content: center;
@@ -373,7 +373,7 @@
 </head>
 <body>
 
-  <!-- Topo Fixo com Logo (Quadrado Perfeito) -->
+  <!-- Topo Fixo com Logo (30% Maior) -->
   <div class="top-header">
     <img src="atenalogo.png" alt="Colégio Atena">
   </div>
@@ -468,7 +468,7 @@
               "E) venerada pelos estrangeiros que vivem na região."
             ],
             correta: 4,
-            justificativa: "A opção correta é a E pois o texto destaca logo no título e no primeiro parágrafo que os estrangeiros consideram o país um **'paradise'** (paraíso) e uma **'utopia'**, reforçando através do depoimento de um **expatriado** (**'expat'**) que a cidade é highly **venerada pelos estrangeiros que vivem na região** pela alta qualidade de vida e conveniência."
+            justificativa: "A opção correta é a E pois o texto destaca logo no título e no primeiro parágrafo que os estrangeiros consideram o país um **'paradise'** (paraíso) e uma **'utopia'**, reforçando através do depoimento de um **expatriado** (**'expat'**) que a cidade é altamente **venerada pelos estrangeiros que vivem na região** pela alta qualidade de vida e conveniência."
           },
           {
             id: 3,
@@ -689,7 +689,7 @@
     let respostasUsuario = {};
     let eliminadas = {};
 
-    // FUNÇÃO AUXILIAR PARA FORMATAR MARKDOWN PARA HTML (CONVERTE **texto** EM <strong>texto</strong>)
+    // FUNÇÃO AUXILIAR PARA FORMATAR MARKDOWN PARA HTML
     function formatarTextoMarkdown(texto) {
       if (!texto) return '';
       return texto.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -807,10 +807,32 @@
       });
     }
 
+    // REGRA DA TESOURA: PERMITE NO MÁXIMO 4 ELIMINAÇÕES
     function alternarEliminacao(event, optIdx) {
       event.stopPropagation();
       const key = `${indiceQuestao}-${optIdx}`;
-      eliminadas[key] = !eliminadas[key];
+      const estaEliminada = !!eliminadas[key];
+
+      // Se o usuário está tentando eliminar mais uma opção
+      if (!estaEliminada) {
+        // Conta quantas opções já estão eliminadas nesta questão
+        let totalEliminadas = 0;
+        const q = testeAtual.questoes[indiceQuestao];
+        q.opcoes.forEach((_, idx) => {
+          if (eliminadas[`${indiceQuestao}-${idx}`]) {
+            totalEliminadas++;
+          }
+        });
+
+        // Se já houver 4 eliminadas, impede a 5ª eliminação
+        if (totalEliminadas >= 4) {
+          alert("Não é permitido eliminar todas as opções. Pelo menos uma resposta precisa estar disponível!");
+          return;
+        }
+      }
+
+      // Alterna o estado de eliminação
+      eliminadas[key] = !estaEliminada;
       
       const optEl = document.getElementById(`opt-${optIdx}`);
       if (optEl) {
